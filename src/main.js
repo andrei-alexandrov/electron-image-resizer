@@ -1,34 +1,39 @@
-const { app, BrowserWindow } = require('electron');
-const path = require('path');
+const { app, BrowserWindow } = require("electron");
+const path = require("path");
 
-if (require('electron-squirrel-startup')) {
+const isMac = process.platform === "darwin";
+
+if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
-const createWindow = () => {
+const createMainWindow = () => {
   const mainWindow = new BrowserWindow({
-    width: 800,
+    title: "Image Resizer",
+    width: 1000,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  mainWindow.loadFile(path.join(__dirname, "./renderer/index.html"));
   mainWindow.webContents.openDevTools();
 };
 
-app.on('ready', createWindow);
+// app.on("ready", createWindow);
+app.whenReady().then(() => {
+  createMainWindow();
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createMainWindow();
+    }
+  });
+});
+
+app.on("window-all-closed", () => {
+  if (!isMac) {
     app.quit();
   }
 });
-
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
-});
-

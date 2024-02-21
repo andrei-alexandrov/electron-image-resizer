@@ -9,7 +9,9 @@ const loadImage = (e) => {
   const file = e.target.files[0]; //Can i do also img.files[0]; ?
 
   if (!isFileImage(file)) {
-    alert("Please select an image. Acceptable formats are: gif, png, jpeg");
+    callAlertMessage(
+      "Please select an image. Acceptable formats are: gif, png, jpeg"
+    );
     return;
   }
   console.log("Success");
@@ -24,13 +26,45 @@ const loadImage = (e) => {
 
   form.style.display = "block";
   filename.innerText = file.name;
+  outputPath.innerText = path.join(os.homedir(), "imageresizer");
 };
 
 //I am making sure that the file is an image
 const isFileImage = (file) => {
-  const acceptedImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg", "image/webp"];
+  const acceptedImageTypes = [
+    "image/gif",
+    "image/jpeg",
+    "image/png",
+    "image/jpg",
+    "image/webp",
+  ];
   return file && acceptedImageTypes.includes(file["type"]);
 };
 
-img.addEventListener("change", loadImage);
+const callAlertMessage = (message) => {
+  Toastify.toast({
+    text: message,
+    duration: 5001,
+    close: false,
+    style: {
+      background: "red",
+      color: "white",
+      textAlign: "center",
+    },
+  });
+};
 
+const callSuccessMessage = (message) => {
+  Toastify.toast({
+    text: message,
+    duration: 4001,
+    close: false,
+    style: {
+      background: "green",
+      color: "white",
+      textAling: "center",
+    },
+  });
+};
+
+img.addEventListener("change", loadImage);

@@ -15,7 +15,9 @@ const createMainWindow = () => {
     height: 600,
     icon: path.join(__dirname, "../assets/icons/favicon.ico"),
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      nodeIntegration: true,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 

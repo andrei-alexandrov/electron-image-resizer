@@ -17,7 +17,13 @@ Technologies used: Electron.js
 
 ## How to run
 
-### `git clone` https://github.com/andrei-alexandrov/electron-image-resizer.git
-### `cd` electron-image-resizer
-### `npm install`
-### `npm start`
+```bash
+# Clone this repository
+git clone https://github.com/andrei-alexandrov/electron-image-resizer.git
+# Go into the repository
+cd electron-image-resizer
+# Install dependencies
+npm install
+# Run the app
+npm start
+```

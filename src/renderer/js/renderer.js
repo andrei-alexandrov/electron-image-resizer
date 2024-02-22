@@ -9,12 +9,12 @@ const loadImage = (e) => {
   const file = e.target.files[0]; //Can i do also img.files[0]; ?
 
   if (!isFileImage(file)) {
-    callAlertMessage(
-      "Please select an image. Acceptable formats are: gif, png, jpeg"
+    displayToastMessage(
+      "Please select an image. Acceptable formats are: gif, png, jpeg, jpg", "alert"
     );
     return;
   }
-  console.log("Success");
+  // console.log("Success");
 
   //Here i get the orignal dimensions
   const image = new Image();
@@ -38,11 +38,11 @@ const sendImage = (e) => {
   const imagePath = img.files[0].path;
 
   if (!img.files[0]) {
-    callAlertMessage("Please, upload an image.");
+    displayToastMessage("Please, upload an image.", "alert");
   }
 
   if (!width || !height) {
-    callAlertMessage("Please fill in a width and height.");
+    displayToastMessage("Please fill in a width and height.", "alert");
   }
 
   //I am sending to the main process using ipcRenderer
@@ -55,8 +55,8 @@ const sendImage = (e) => {
 
 //Catching the "image:done"
 ipcRenderer.on("image:done", () => {
-  callSuccessMessage(
-    `Images is resized to ${widthInput.value} x ${heightInput.value}`
+  displayToastMessage(
+    `Image is resized to ${widthInput.value} x ${heightInput.value}`, "success"
   );
 });
 
@@ -67,36 +67,68 @@ const isFileImage = (file) => {
     "image/jpeg",
     "image/png",
     "image/jpg",
-    "image/webp",
   ];
   return file && acceptedImageTypes.includes(file["type"]);
 };
 
-const callAlertMessage = (message) => {
+const displayToastMessage = (message, messageType) => {
+  let backgroundColor;
+  switch (messageType) {
+    case 'success':
+      backgroundColor = "green";
+      break;
+    case 'alert':
+      backgroundColor = "red";
+      break;
+    default:
+      backgroundColor = "orange";
+  }
+
   Toastify.toast({
     text: message,
-    duration: 5001,
+    duration: 5501,
     close: false,
     style: {
-      background: "red",
+      background: backgroundColor,
       color: "white",
       textAlign: "center",
+      fontSize: "18px",
+      padding: "6px",
     },
   });
 };
 
-const callSuccessMessage = (message) => {
-  Toastify.toast({
-    text: message,
-    duration: 4501,
-    close: false,
-    style: {
-      background: "green",
-      color: "white",
-      textAlign: "center",
-    },
-  });
-};
+
+
+// const callAlertMessage = (message) => {
+//   Toastify.toast({
+//     text: message,
+//     duration: 5001,
+//     close: false,
+//     style: {
+//       background: "red",
+//       color: "white",
+//       textAlign: "center",
+//       fontSize: "18px",
+//       padding: "6px",
+//     },
+//   });
+// };
+
+// const callSuccessMessage = (message) => {
+//   Toastify.toast({
+//     text: message,
+//     duration: 5501,
+//     close: false,
+//     style: {
+//       background: "green",
+//       color: "white",
+//       textAlign: "center",
+//       fontSize: "18px",
+//       padding: "6px",
+//     },
+//   });
+// };
 
 img.addEventListener("change", loadImage);
 form.addEventListener("submit", sendImage);

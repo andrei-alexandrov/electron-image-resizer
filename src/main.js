@@ -3,9 +3,11 @@ const os = require("os");
 const fs = require("fs");
 const path = require("path");
 const resizeImg = require("resize-img");
+const getMenuTemplate = require("./menuTemplate");
 
 const isInDevMode = process.env.NODE_ENV === "development";
 const isMac = process.platform === "darwin";
+
 let mainWindow;
 
 if (require("electron-squirrel-startup")) {
@@ -18,7 +20,7 @@ const createMainWindow = () => {
   mainWindow = new BrowserWindow({
     title: "Image Resizer",
     width: isInDevMode ? 1000 : 800,
-    height: 600,
+    height: 700,
     icon: path.join(__dirname, "../assets/icons/favicon.ico"),
     webPreferences: {
       nodeIntegration: true,
@@ -37,8 +39,8 @@ const createMainWindow = () => {
 const createAboutWindow = () => {
   const aboutWindow = new BrowserWindow({
     title: "",
-    width: 400,
-    height: 300,
+    width: 500,
+    height: 400,
   });
 
   aboutWindow.loadFile(path.join(__dirname, "./renderer/about.html"));
@@ -49,6 +51,7 @@ app.whenReady().then(() => {
   createMainWindow();
 
   //Implement menu
+  const menuTemplate = getMenuTemplate(createAboutWindow);
   const mainMenu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(mainMenu);
 
@@ -63,46 +66,6 @@ app.whenReady().then(() => {
   });
 });
 
-const menuTemplate = [
-  {
-    label: "File",
-    submenu: [
-      {
-        label: "Quit",
-        click: () => {
-          app.quit();
-        },
-        accelerator: "Ctrl + q",
-      },
-    ],
-  },
-  ...(isMac
-    ? [
-        {
-          label: app.name,
-          submenu: [
-            {
-              label: "About",
-              click: createAboutWindow,
-            },
-          ],
-        },
-      ]
-    : [
-        {
-          label: "Help",
-          submenu: [
-            {
-              label: "About",
-              click: () => {
-                createAboutWindow();
-              },
-            },
-          ],
-        },
-      ]),
-];
-
 //Response to the ipcRenderer resize
 ipcMain.on("image:resize", (e, options) => {
   options.dest = path.join(os.homedir(), "imageresizer");
@@ -115,8 +78,8 @@ const resizeImage = async ({ imagePath, width, height, dest }) => {
   try {
     //Reference to https://github.com/kevva/resize-img
     const newPath = await resizeImg(fs.readFileSync(imagePath), {
-      width: +width,
-      height: +height,
+      width: Number(width),
+      height: Number(height),
     });
 
     //Creating file name

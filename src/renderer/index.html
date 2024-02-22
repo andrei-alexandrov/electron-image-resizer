@@ -17,56 +17,54 @@
 
     <title>Image Resizer</title>
   </head>
-  <body class="bg-teal-700">
+  <body class="body-container">
     <div
-      class="max-w-xl m-auto h-screen flex flex-col align-center justify-center"
+      class="form-container"
     >
-      <div class="flex flex-col w-full items-center justify-center bg-grey-lighter">
+      <div class="uploader">
         <label
-          class="w-64 flex flex-col items-center px-4 py-7 bg-white text-gray-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:text-teal-800"
+          class="upload-label"
         >
         <img src="../../assets/icons/favicon.ico" alt="image-resizer" width="30"/>
-          <span class="mt-2 leading-normal">Select an image to resize</span>
+          <span class="upload-text">Select an image to resize</span>
           <input id="img" type="file" class="hidden" />
         </label>
       </div>
 
       <!-- Form -->
-      <form id="img-form" class="hidden">
-        <div class="mt-6">
-          <!-- <label class="mt-1 block text-white text-center w-80 m-auto py-3 shadow-sm border-gray-300 rounded-md">Width</label> -->
+      <form id="img-form" class="form-hidden">
+        <div class="input-wrapper">
           <input
             type="number"
             name="width"
             id="width"
-            class="mt-1 block w-80 m-auto p-3 shadow-sm border-gray-300 rounded-md"
+            class="input-field"
             placeholder="Width"
           />
         </div>
 
-        <div class="mt-4">
-          <!-- <label class="mt-1 block text-white text-center w-80 m-auto py-3 shadow-sm border-gray-300 rounded-md">Height</label> -->
+        <div class="input-wrapper">
           <input
             type="number"
             name="height"
             id="height"
-            class="mt-1 block w-80 m-auto p-3 shadow-sm border-gray-300 rounded-md"
+            class="input-field"
             placeholder="Height"
           />
         </div>
 
         <!-- Button -->
-        <div class="mt-6">
+        <div class="submit-wrapper">
           <button
             type="submit"
-            class="w-80 m-auto flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-500 hover:bg-teal-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            class="submit-button"
           >
             Resize
           </button>
       </form>
-
-      <p class="text-white text-lg text-center font-mono mt-6"><strong>File: </strong><span id="filename"></span></p>
-      <p class="text-white text-lg text-center font-mono mt-2"><strong>Output: </strong><span id="output-path"></span></p>
+      
+      <p class="info-text"><strong>File: </strong><span id="filename"></span></p>
+      <p class="info-text"><strong>Output: </strong><span id="output-path"></span></p>
     </div>
   </body>
 </html>

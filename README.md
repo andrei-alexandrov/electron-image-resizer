@@ -7,7 +7,7 @@ Technologies used: Electron.js. The app is build as an exercise.
 
 ## Summary
 
-0. Upload a photo - possible formats: gif, jpeg, png, jpg, webp.
+0. Upload a photo - possible formats: gif, jpeg, png, jpg.
 1. The app displays the dimensions, name and path of the photo.
 2. Resize it to your desired dimensions. The new image overrides the old one.
 

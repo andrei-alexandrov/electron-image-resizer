@@ -1,7 +1,12 @@
-const { app, BrowserWindow, Menu } = require("electron");
+const { app, BrowserWindow, Menu, ipcMain, shell } = require("electron");
+const os = require("os");
+const fs = require("fs");
 const path = require("path");
+const resizeImg = require("resize-img");
 
+const isInDevMode = process.env.NODE_ENV !== "production";
 const isMac = process.platform === "darwin";
+let mainWindow;
 
 if (require("electron-squirrel-startup")) {
   app.quit();
@@ -9,20 +14,23 @@ if (require("electron-squirrel-startup")) {
 
 //Creating the main window
 const createMainWindow = () => {
-  const mainWindow = new BrowserWindow({
+  console.log(`isInDevMode: ${isInDevMode}, NODE_ENV: ${process.env.NODE_ENV}`);
+  mainWindow = new BrowserWindow({
     title: "Image Resizer",
-    width: 1000,
+    width: isInDevMode ? 1000 : 800,
     height: 600,
     icon: path.join(__dirname, "../assets/icons/favicon.ico"),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 
   mainWindow.loadFile(path.join(__dirname, "./renderer/index.html"));
-  mainWindow.webContents.openDevTools();
+  if (isInDevMode) {
+    mainWindow.webContents.openDevTools();
+  }
 };
 
 //Creating the about window
@@ -43,6 +51,10 @@ app.whenReady().then(() => {
   //Implement menu
   const mainMenu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(mainMenu);
+
+  mainWindow.on("closed", () => {
+    mainWindow = null;
+  });
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -90,6 +102,45 @@ const menuTemplate = [
         },
       ]),
 ];
+
+//Response to the ipcRenderer resize
+ipcMain.on("image:resize", (e, options) => {
+  options.dest = path.join(os.homedir(), "imageresizer");
+  // console.log(options);
+  resizeImage(options);
+});
+
+//Rezise the image
+const resizeImage = async ({ imagePath, width, height, dest }) => {
+  try {
+    //Reference to https://github.com/kevva/resize-img
+    const newPath = await resizeImg(fs.readFileSync(imagePath), {
+      width: +width,
+      height: +height,
+    });
+
+    //Creating file name
+    const fileName = path.basename(imagePath);
+
+    //Creating destination folder if it doesn't exist
+    if (!fs.existsSync(dest)) {
+      fs.mkdirSync(dest);
+    }
+
+    //Write the file to the destination folder
+    fs.writeFileSync(path.join(dest, fileName), newPath);
+
+    //Send success to the render but i am checking first if the window is closed and defined
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send("image:done");
+    }
+
+    //Open the destination folder
+    shell.openPath(dest);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 app.on("window-all-closed", () => {
   if (!isMac) {

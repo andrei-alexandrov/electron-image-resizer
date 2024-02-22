@@ -29,6 +29,37 @@ const loadImage = (e) => {
   outputPath.innerText = path.join(os.homedir(), "imageresizer");
 };
 
+//I am sending the image data to the main process
+const sendImage = (e) => {
+  e.preventDefault();
+
+  const width = widthInput.value;
+  const height = heightInput.value;
+  const imagePath = img.files[0].path;
+
+  if (!img.files[0]) {
+    callAlertMessage("Please, upload an image.");
+  }
+
+  if (!width || !height) {
+    callAlertMessage("Please fill in a width and height.");
+  }
+
+  //I am sending to the main process using ipcRenderer
+  ipcRenderer.send("image:resize", {
+    imagePath,
+    width,
+    height,
+  });
+};
+
+//Catching the "image:done"
+ipcRenderer.on("image:done", () => {
+  callSuccessMessage(
+    `Images is resized to ${widthInput.value} x ${heightInput.value}`
+  );
+});
+
 //I am making sure that the file is an image
 const isFileImage = (file) => {
   const acceptedImageTypes = [
@@ -57,14 +88,15 @@ const callAlertMessage = (message) => {
 const callSuccessMessage = (message) => {
   Toastify.toast({
     text: message,
-    duration: 4001,
+    duration: 4501,
     close: false,
     style: {
       background: "green",
       color: "white",
-      textAling: "center",
+      textAlign: "center",
     },
   });
 };
 
 img.addEventListener("change", loadImage);
+form.addEventListener("submit", sendImage);

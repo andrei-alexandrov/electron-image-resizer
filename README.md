@@ -1,15 +1,15 @@
 <div align="center">
-  <h2>App under construction.</h2>
-  <span>Electron app that is able to resize photos.</span>
+  <h2>Image resizer</h2>
+  <span>Upload your photo and resize it to your desired dimensions.</span>
 </div>
 <br />
-Technologies used: Electron.js
+Technologies used: Electron.js. The app is build as an exercise.
 
 ## Summary
 
 0. Upload a photo - possible formats: gif, jpeg, png, jpg, webp.
 1. The app displays the dimensions, name and path of the photo.
-2. Resize it to a desired dimensions.
+2. Resize it to your desired dimensions. The new image overrides the old one.
 
 ## App images
 
@@ -26,4 +26,6 @@ cd electron-image-resizer
 npm install
 # Run the app
 npm start
+# Run the app in watch mode - meaning changes will apply automatically
+npm run watch
 ```

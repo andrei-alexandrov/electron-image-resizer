@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const resizeImg = require("resize-img");
 
-const isInDevMode = process.env.NODE_ENV !== "production";
+const isInDevMode = process.env.NODE_ENV === "development";
 const isMac = process.platform === "darwin";
 let mainWindow;
 

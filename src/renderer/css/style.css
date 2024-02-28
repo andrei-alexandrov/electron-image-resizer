@@ -52,7 +52,7 @@
 }
 
 .upload-label:hover .upload-text {
-  color: #545677;
+  color: #2194cd;
 }
 
 .upload-text {
@@ -80,13 +80,12 @@
 .submit-button {
   width: 20rem;
   display: flex;
+  justify-content: center;
   padding: 0.75rem;
   border: none;
   font-size: 0.9rem;
   border-radius: 0.35rem;
   color: white;
-  background-color: #38b2ac;
-  justify-content: center;
   position: relative;
   left: 0;
   bottom: 0;
@@ -111,7 +110,7 @@
 
 .submit-button:hover {
   cursor: pointer;
-  color: rgb(149, 237, 149);
+  color: #29b7ff;
 }
 
 .info-text {

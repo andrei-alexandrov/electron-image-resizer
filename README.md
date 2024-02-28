@@ -13,9 +13,11 @@ Technologies used: Electron.js. The app is build as an exercise.
 
 ## App images
 
-![imageResizer](./assets/img-resizer.png)
+![imageResizer](./assets/starting-page-animation2.gif)
 
 ## How to run
+
+To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
 
 ```bash
 # Clone this repository

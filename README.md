@@ -1,15 +1,15 @@
 <div align="center">
   <h2>Image resizer</h2>
-  <span>Upload your photo and resize it to your desired dimensions.</span>
+  <span>Upload a photo and resize it to your desired dimensions.</span>
 </div>
 <br />
 Technologies used: Electron.js. The app is build as an exercise.
 
 ## Summary
 
-0. Upload a photo - possible formats: gif, jpeg, png, jpg.
+0. Possible upload formats: gif, jpeg, png, jpg.
 1. The app displays the dimensions, name and path of the photo.
-2. Resize it to your desired dimensions. The new image overrides the old one.
+2. The new resized photo doesn't override the old one.
 
 ## App images
 

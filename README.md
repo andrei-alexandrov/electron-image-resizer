@@ -13,7 +13,7 @@ Technologies used: Electron.js. The app is build as an exercise.
 
 ## App images
 
-![imageResizer](./assets/starting-page-animation1.gif)
+![imageResizer](./assets/starting-page-animation11.gif)
 
 ## How to run
 
